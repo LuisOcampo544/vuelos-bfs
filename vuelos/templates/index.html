@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Vuelos BFS</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 350px;
+            box-shadow: 0px 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #1e3c72;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        select:focus {
+            border-color: #2a5298;
+        }
+
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            background: #2a5298;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #1e3c72;
+        }
+
+        .resultado {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f4f6f8;
+            border-radius: 10px;
+        }
+
+        .ruta {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Vuelos BFS</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>Estado inicial:</label>
+        <select name="inicio" required>
+            <option value="">Selecciona</option>
+            {% for estado in estados %}
+                <option value="{{ estado }}">{{ estado }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Estado destino:</label>
+        <select name="fin" required>
+            <option value="">Selecciona</option>
+            {% for estado in estados %}
+                <option value="{{ estado }}">{{ estado }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Buscar ruta</button>
+    </form>
+
+    {% if resultado %}
+        <div class="resultado">
+            <h3>Resultado:</h3>
+
+            {% if resultado.0 == "No hay ruta disponible" %}
+                <p class="error">No hay ruta disponible</p>
+            {% else %}
+                <p class="ruta">
+                    {% for ciudad in resultado %}
+                        {{ ciudad }}{% if not forloop.last %} → {% endif %}
+                    {% endfor %}
+                </p>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
